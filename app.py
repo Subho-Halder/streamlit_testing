@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-
-
 # Load the saved models
 pipeline_logistic = joblib.load('pipeline_logistic.pkl')
 pipeline_random_forest = joblib.load('pipeline_random_forest.pkl')
@@ -24,6 +22,7 @@ Credit_Score = st.number_input("Credit Score", min_value=300, max_value=850, val
 Employment_Years = st.number_input("Employment Years", min_value=0, max_value=50, value=5)
 Loan_Amount_Requested = st.number_input("Loan Amount Requested", min_value=1000, max_value=500000, value=15000)
 
+# Check if Predict button is clicked
 if st.button("Predict"):
     try:
         # Convert input data into a DataFrame
@@ -63,9 +62,16 @@ if st.button("Predict"):
             'Probability_of_Default': float(stacking_proba[0][1])
         }
 
+        # Display input values and predictions
+        st.write("### Input Values:")
+        st.write(f"- Age: {Age}")
+        st.write(f"- Annual Income: {Annual_Income}")
+        st.write(f"- Credit Score: {Credit_Score}")
+        st.write(f"- Employment Years: {Employment_Years}")
+        st.write(f"- Loan Amount Requested: {Loan_Amount_Requested}")
+
         st.write("### Predictions:")
         st.json(predictions)
 
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
-
